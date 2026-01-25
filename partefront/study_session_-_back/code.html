@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Study Session - Back</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2badee",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-[430px] mx-auto bg-background-light dark:bg-background-dark">
+<!-- TopAppBar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="text-[#101c22] dark:text-white flex size-12 shrink-0 items-center">
+<span class="material-symbols-outlined cursor-pointer">close</span>
+</div>
+<h2 class="text-[#101c22] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Study Session</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-[#101c22] dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- ProgressBar -->
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between">
+<p class="text-[#101c22] dark:text-white text-base font-medium leading-normal">Session Progress</p>
+<p class="text-[#101c22] dark:text-white text-sm font-normal leading-normal">12/15</p>
+</div>
+<div class="rounded-full bg-gray-200 dark:bg-[#325567] h-2">
+<div class="h-2 rounded-full bg-primary" style="width: 80%;"></div>
+</div>
+</div>
+<!-- Card Container -->
+<div class="flex-1 px-4 py-2 flex flex-col gap-4">
+<div class="bg-white dark:bg-[#1c2e36] rounded-xl p-6 shadow-sm border border-gray-100 dark:border-transparent flex flex-col items-center">
+<!-- Front Side Hint (Small) -->
+<p class="text-gray-400 text-xs font-medium uppercase tracking-widest mb-2">Spanish: La Librería</p>
+<!-- HeadlineText (The Answer) -->
+<div class="flex flex-col items-center">
+<h1 class="text-[#101c22] dark:text-white tracking-light text-[36px] font-bold leading-tight text-center pt-2">The Bookstore</h1>
+<!-- MetaText (Phonetics) -->
+<div class="flex items-center gap-2 pb-3 pt-1">
+<p class="text-primary text-sm font-normal leading-normal">/ðə ˈbʊk.stɔːr/</p>
+<span class="material-symbols-outlined text-primary text-xl cursor-pointer">volume_up</span>
+</div>
+</div>
+<div class="w-full h-[1px] bg-gray-100 dark:bg-gray-700 my-4"></div>
+<!-- SectionHeader -->
+<div class="w-full">
+<h3 class="text-[#101c22] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-4">Examples</h3>
+<!-- Example Sentences -->
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<p class="text-[#101c22] dark:text-white text-md font-medium">Fuimos a la librería para comprar el nuevo libro.</p>
+<p class="text-gray-500 dark:text-[#92b7c9] text-sm">We went to the bookstore to buy the new book.</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-[#101c22] dark:text-white text-md font-medium">Hay una librería pequeña en la esquina de mi calle.</p>
+<p class="text-gray-500 dark:text-[#92b7c9] text-sm">There is a small bookstore on the corner of my street.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SuperMemo Feedback Buttons (Bottom Bar) -->
+<div class="p-4 bg-background-light dark:bg-background-dark flex flex-col gap-4">
+<p class="text-center text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-tighter">How was the recall?</p>
+<div class="grid grid-cols-4 gap-2 pb-6">
+<!-- Again -->
+<button class="flex flex-col items-center justify-center gap-1 p-3 rounded-xl bg-red-100 dark:bg-red-900/20 group">
+<span class="text-red-600 dark:text-red-400 text-sm font-bold">Again</span>
+<span class="text-[10px] text-red-500 dark:text-red-400/70 font-medium">&lt; 1m</span>
+</button>
+<!-- Hard -->
+<button class="flex flex-col items-center justify-center gap-1 p-3 rounded-xl bg-orange-100 dark:bg-orange-900/20">
+<span class="text-orange-600 dark:text-orange-400 text-sm font-bold">Hard</span>
+<span class="text-[10px] text-orange-500 dark:text-orange-400/70 font-medium">2d</span>
+</button>
+<!-- Good -->
+<button class="flex flex-col items-center justify-center gap-1 p-3 rounded-xl bg-primary/10 dark:bg-primary/20 ring-2 ring-primary">
+<span class="text-primary text-sm font-bold">Good</span>
+<span class="text-[10px] text-primary/80 font-medium">4d</span>
+</button>
+<!-- Easy -->
+<button class="flex flex-col items-center justify-center gap-1 p-3 rounded-xl bg-green-100 dark:bg-green-900/20">
+<span class="text-green-600 dark:text-green-400 text-sm font-bold">Easy</span>
+<span class="text-[10px] text-green-500 dark:text-green-400/70 font-medium">7d</span>
+</button>
+</div>
+</div>
+<!-- iOS Indicator -->
+<div class="flex justify-center pb-2">
+<div class="w-32 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+</div>
+</div>
+</body></html>

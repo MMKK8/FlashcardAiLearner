@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2badee",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white antialiased">
+<div class="relative flex min-h-screen w-full max-w-[430px] mx-auto flex-col overflow-x-hidden">
+<!-- Top App Bar Component -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="text-white flex size-12 shrink-0 items-center justify-start">
+<button class="material-symbols-outlined text-white text-[24px]">close</button>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Study Session</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-transparent text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Progress Bar Component -->
+<div class="flex flex-col gap-2 px-6 py-2">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-primary text-sm font-medium leading-normal">Spanish Level 1</p>
+<p class="text-primary/70 text-xs font-normal leading-normal uppercase tracking-widest">15 / 20</p>
+</div>
+<div class="rounded-full bg-[#192b33] h-2.5 w-full overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Main Card Section (Center) -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 py-8">
+<div class="w-full aspect-[3/4] max-h-[500px] flex flex-col items-center justify-center rounded-xl bg-[#192b33] shadow-[0_12px_40px_rgba(0,0,0,0.3)] border border-white/5 relative group">
+<!-- Abstract Pattern Background inside card -->
+<div class="absolute inset-0 opacity-10 pointer-events-none rounded-xl overflow-hidden" data-alt="Soft abstract blue gradient background pattern" style="background-image: radial-gradient(circle at 20% 20%, #2badee 0%, transparent 50%), radial-gradient(circle at 80% 80%, #2badee 0%, transparent 50%);">
+</div>
+<div class="z-10 flex flex-col items-center gap-8">
+<!-- Word -->
+<h1 class="text-white text-5xl font-bold tracking-tight text-center px-4">
+                        Biblioteca
+                    </h1>
+<!-- Audio Button -->
+<button class="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[32px]">volume_up</span>
+</button>
+</div>
+<!-- Footer tip inside card -->
+<div class="absolute bottom-8 text-[#92b7c9] text-sm font-medium uppercase tracking-[0.2em]">
+                    Front
+                </div>
+</div>
+<!-- Context Hint -->
+<p class="mt-8 text-[#92b7c9] text-center text-sm font-normal px-10 leading-relaxed italic">
+                "Voy a la biblioteca para estudiar."
+            </p>
+</main>
+<!-- Single Button Component (Bottom Action) -->
+<div class="px-6 py-8 mt-auto">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-16 px-5 bg-primary text-[#101c22] text-lg font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
+<span class="truncate">Show Answer</span>
+</button>
+</div>
+<!-- Safe area spacer for iOS -->
+<div class="h-6"></div>
+<!-- Bottom Nav Bar (Minimal/Hidden version for study session) -->
+<!-- Only shown if requested, but kept as a thin decorative border or hidden to maintain focus -->
+<div class="h-1 bg-[#192b33]/20"></div>
+</div>
+</body></html>
