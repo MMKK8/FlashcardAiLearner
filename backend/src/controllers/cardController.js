@@ -26,7 +26,11 @@ async function generateCard(req, res) {
 
         // Call Gemini API
         const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-        const prompt = `Actúa como un diccionario experto. Para la palabra en inglés '${word}', devuelve únicamente un objeto JSON con la siguiente estructura: { 'translation': 'Traducción al español', 'phonetic': '...', 'examples': ['Sentence in English using the word', 'Another sentence in English'] }. Asegúrate de que la traducción sea al español pero los ejemplos (examples) estén 100% en INGLÉS.`;
+        const prompt = `Actúa como un diccionario experto. Analiza la palabra en inglés '${word}'. 
+        1. Identificación: Si es un verbo, transfórmalo a infinitivo (sin 'to'). Si es un sustantivo plural, pásalo a singular.
+        2. Formato: Devuelve la palabra en 'Sentence case' (Solo la primera letra mayúscula, el resto minúsculas). Ejemplo: 'RUN' -> 'Run', 'dogs' -> 'Dog'.
+        3. Respuesta: Devuelve únicamente un objeto JSON con la siguiente estructura: { 'word_en': 'La palabra estandarizada', 'translation': 'Traducción al español', 'phonetic': '...', 'examples': ['Sentence in English using the word', 'Another sentence in English'] }. 
+        Asegúrate de que la traducción sea al español pero los ejemplos (examples) estén 100% en INGLÉS.`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -47,7 +51,7 @@ async function generateCard(req, res) {
         if (!deck_id) {
             return res.json({
                 preview: true,
-                word_en: word,
+                word_en: cardData.word_en || word,
                 word_es: cardData.translation,
                 phonetic: cardData.phonetic,
                 examples: cardData.examples
@@ -63,7 +67,7 @@ async function generateCard(req, res) {
 
         const newCard = await pool.query(insertQuery, [
             deck_id,
-            word,
+            cardData.word_en || word,
             cardData.translation,
             cardData.phonetic,
             JSON.stringify(cardData.examples)
@@ -144,7 +148,7 @@ async function extractWordFromImage(req, res) {
         }
 
         const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-        const prompt = "Extract the single most prominent English word from this image. Return ONLY the word, no punctuation, no extra text. If there are multiple words, choose the most significant one.";
+        const prompt = "Extract the single most prominent English word from this image. Return ONLY the word. If it is a verb, convert to infinitive (no 'to'). If it is a plural noun, convert to singular. Format as Sentence case (Capitalize first letter, rest lowercase). No punctuation, no extra text.";
 
         const imagePart = {
             inlineData: {
