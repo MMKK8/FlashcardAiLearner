@@ -26,11 +26,26 @@ async function generateCard(req, res) {
 
         // Call Gemini API
         const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-        const prompt = `Actúa como un diccionario experto. Analiza la palabra en inglés '${word}'. 
-        1. Identificación: Si es un verbo, transfórmalo a infinitivo (sin 'to'). Si es un sustantivo plural, pásalo a singular.
-        2. Formato: Devuelve la palabra en 'Sentence case' (Solo la primera letra mayúscula, el resto minúsculas). Ejemplo: 'RUN' -> 'Run', 'dogs' -> 'Dog'.
-        3. Respuesta: Devuelve únicamente un objeto JSON con la siguiente estructura: { 'word_en': 'La palabra estandarizada', 'translation': 'Traducción al español', 'phonetic': '...', 'examples': ['Sentence in English using the word', 'Another sentence in English'] }. 
-        Asegúrate de que la traducción sea al español pero los ejemplos (examples) estén 100% en INGLÉS.`;
+        const prompt = `Actúa como un diccionario experto.
+        Instrucción Principal: Analiza la palabra en inglés proporcionada: '${word}'. IGNORA si está en plural, mayúsculas o conjugada.
+        
+        Paso 1: Estandarización
+        - Si es un sustantivo plural, conviértelo a SINGULAR (ej: HUNTERS -> Hunter).
+        - Si es un verbo conjugado, conviértelo a INFINITIVO sin 'to' (ej: Running -> Run).
+        - Formato: Sentence case (Primera mayúscula, resto minúsculas).
+
+        Paso 2: Traducción y Definición
+        - Traduce AL ESPAÑOL la palabra estandarizada del Paso 1 (NO la original).
+        - Ejemplo: Input 'HUNTERS' -> Standardized 'Hunter' -> Translation 'Cazador'.
+
+        Paso 3: Respuesta JSON
+        Devuelve ÚNICAMENTE un objeto JSON:
+        { 
+            "word_en": "La palabra estandarizada (Paso 1)", 
+            "translation": "Traducción al español (Paso 2)", 
+            "phonetic": "Transcipción fonética de la palabra estandarizada", 
+            "examples": ["Sentence in English using the standardized word", "Another sentence"] 
+        }`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -148,7 +163,7 @@ async function extractWordFromImage(req, res) {
         }
 
         const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-        const prompt = "Extract the single most prominent English word from this image. Return ONLY the word. If it is a verb, convert to infinitive (no 'to'). If it is a plural noun, convert to singular. Format as Sentence case (Capitalize first letter, rest lowercase). No punctuation, no extra text.";
+        const prompt = "Analyze the image and identify the main English word. IGNORE plurality or case. Convert it to SINGULAR form (if noun) or INFINITIVE (if verb). Return ONLY the standardized word in Sentence case (e.g. 'Hunters' -> 'Hunter'). No punctuation.";
 
         const imagePart = {
             inlineData: {
