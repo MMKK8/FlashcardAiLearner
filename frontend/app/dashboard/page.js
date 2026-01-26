@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { PlusCircle, Book, Trash2, ArrowRight, Save, Sparkles, Brain } from 'lucide-react';
+import { PlusCircle, Book, Trash2, ArrowRight, Save, Sparkles, Brain, Download } from 'lucide-react';
 
 // Toast Component
 const Toast = ({ message, onClose }) => (
@@ -138,6 +138,27 @@ export default function Dashboard() {
             fetchDecks();
         } catch (error) {
             console.error('Error creating deck:', error);
+        }
+    };
+
+    const handleExportDeck = async (deckId, deckName, e) => {
+        e.stopPropagation();
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${API_URL}/decks/${deckId}/export`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(response.data, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `${deckName.replace(/\s+/g, '_')}_export.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        } catch (error) {
+            console.error('Error exporting deck:', error);
+            alert('Failed to export deck');
         }
     };
 
@@ -310,6 +331,13 @@ export default function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={(e) => handleExportDeck(deck.id, deck.name, e)}
+                                            className="text-gray-500 hover:text-green-400 p-2 rounded-full hover:bg-gray-700 transition-colors"
+                                            title="Export Deck"
+                                        >
+                                            <Download size={18} />
+                                        </button>
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();

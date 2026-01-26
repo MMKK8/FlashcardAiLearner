@@ -34,11 +34,11 @@ DATABASE_USER=user1
 DATABASE_PASSWORD=Kazio08
 DATABASE_URL=postgres://user:password@192.168.68.110:5432/flashcards
 
-GEMINI_API_KEY=AIzaSyA3fii9F7GRaZ58v8Y14ZZ79xIWHzYohXk
+GEMINI_API_KEY=AIzaSyAxM-32gncLepg36lF7DY7Q74U9gVDg2Hc
 JWT_SECRET=needs_input
 
 # Frontend
 NEXT_PUBLIC_API_URL=http://localhost:3001
-Github=https://github.com/MMKK8/FlashcardAlLearner
+Github=https://github.com/MMKK8/FlashcardAiLearner
 
 ```
