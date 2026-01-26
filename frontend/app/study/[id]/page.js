@@ -132,7 +132,9 @@ export default function StudyPage() {
                     {/* Front Content (Always Visible) */}
                     <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center">
                         <span className="text-gray-500 text-sm uppercase tracking-wider font-semibold mb-4">English</span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{currentCard.word_en}</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                            {currentCard.word_en ? (currentCard.word_en.charAt(0).toUpperCase() + currentCard.word_en.slice(1).toLowerCase()) : ''}
+                        </h2>
 
                         {/* Back Content (Revealed on Flip) */}
                         {isFlipped && (

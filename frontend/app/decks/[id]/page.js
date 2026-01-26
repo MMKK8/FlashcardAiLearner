@@ -234,7 +234,9 @@ export default function DeckDetail() {
                         <div key={card.id} className="bg-gray-800 p-5 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
                             <div className="flex justify-between items-start">
                                 <div className="w-1/3">
-                                    <h3 className="text-xl font-bold text-white mb-1">{card.word_en}</h3>
+                                    <h3 className="text-xl font-bold text-white mb-1">
+                                        {card.word_en ? (card.word_en.charAt(0).toUpperCase() + card.word_en.slice(1).toLowerCase()) : ''}
+                                    </h3>
                                     <span className="text-sm text-gray-400 font-mono bg-gray-900 px-2 py-0.5 rounded">
                                         {card.phonetic}
                                     </span>
