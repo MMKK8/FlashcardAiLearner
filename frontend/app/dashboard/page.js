@@ -1,8 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { PlusCircle, Book, Trash2, ArrowRight, Save, Sparkles, Brain, Download } from 'lucide-react';
+import { PlusCircle, Book, Trash2, ArrowRight, Save, Sparkles, Brain, Download, Camera } from 'lucide-react';
 
 // Toast Component
 const Toast = ({ message, onClose }) => (
@@ -29,7 +29,12 @@ export default function Dashboard() {
     const [selectedDeckId, setSelectedDeckId] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState('');
+
     const [showSuccess, setShowSuccess] = useState(false);
+
+    // OCR State
+    const fileInputRef = useRef(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -66,6 +71,43 @@ export default function Dashboard() {
                 router.push('/');
             }
             setLoading(false);
+        }
+    };
+
+
+
+    const handleImageTrigger = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        setError('');
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`${API_URL}/cards/ocr`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.data.word) {
+                setWord(response.data.word);
+            }
+        } catch (error) {
+            console.error('OCR error:', error);
+            setError('Failed to extract text from image.');
+        } finally {
+            setIsUploading(false);
+            if (e.target) e.target.value = ''; // Reset input
         }
     };
 
@@ -215,6 +257,27 @@ export default function Dashboard() {
                                     onChange={(e) => setWord(e.target.value)}
                                     disabled={isGenerating || !!previewCard}
                                 />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageUpload}
+                                    accept="image/*"
+                                    capture="environment"
+                                    className="hidden"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleImageTrigger}
+                                    disabled={isGenerating || isUploading || !!previewCard}
+                                    className="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg border border-gray-600 transition-colors flex items-center justify-center min-w-[50px]"
+                                    title="Take a photo"
+                                >
+                                    {isUploading ? (
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    ) : (
+                                        <Camera size={24} />
+                                    )}
+                                </button>
                                 <button
                                     type="submit"
                                     disabled={isGenerating || !word.trim() || !!previewCard}
