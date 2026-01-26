@@ -1,8 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Sparkles, Plus, PlayCircle, Download } from 'lucide-react';
+import { ArrowLeft, Sparkles, Plus, PlayCircle, Download, Camera } from 'lucide-react';
 
 export default function DeckDetail() {
     const params = useParams(); // { id }
@@ -16,6 +16,10 @@ export default function DeckDetail() {
     const [newWord, setNewWord] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState('');
+
+    // OCR State
+    const fileInputRef = useRef(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -70,6 +74,41 @@ export default function DeckDetail() {
             setError('Failed to generate card using AI. Please try again.');
         } finally {
             setIsGenerating(false);
+        }
+    };
+
+    const handleImageTrigger = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        setError('');
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`${API_URL}/cards/ocr`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.data.word) {
+                setNewWord(response.data.word);
+            }
+        } catch (error) {
+            console.error('OCR error:', error);
+            setError('Failed to extract text from image.');
+        } finally {
+            setIsUploading(false);
+            if (e.target) e.target.value = ''; // Reset input
         }
     };
 
@@ -143,6 +182,27 @@ export default function DeckDetail() {
                     </h2>
 
                     <form onSubmit={handleGenerateCard} className="flex gap-4">
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleImageUpload}
+                            accept="image/*"
+                            capture="environment"
+                            className="hidden"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleImageTrigger}
+                            disabled={isGenerating || isUploading}
+                            className="bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg border border-gray-600 transition-colors flex items-center justify-center min-w-[50px]"
+                            title="Take a photo"
+                        >
+                            {isUploading ? (
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <Camera size={24} />
+                            )}
+                        </button>
                         <input
                             type="text"
                             placeholder="Type a word in English... (e.g. 'Serendipity')"

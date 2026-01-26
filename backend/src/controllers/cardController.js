@@ -137,5 +137,31 @@ async function getCards(req, res) {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+async function extractWordFromImage(req, res) {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image file provided' });
+        }
 
-module.exports = { generateCard, getCards, createCard };
+        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const prompt = "Extract the single most prominent English word from this image. Return ONLY the word, no punctuation, no extra text. If there are multiple words, choose the most significant one.";
+
+        const imagePart = {
+            inlineData: {
+                data: req.file.buffer.toString("base64"),
+                mimeType: req.file.mimetype
+            },
+        };
+
+        const result = await model.generateContent([prompt, imagePart]);
+        const response = await result.response;
+        const text = response.text().trim();
+
+        res.json({ word: text });
+    } catch (error) {
+        console.error('OCR error:', error);
+        res.status(500).json({ error: 'Failed to process image' });
+    }
+}
+
+module.exports = { generateCard, getCards, createCard, extractWordFromImage };
