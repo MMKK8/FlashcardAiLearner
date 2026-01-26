@@ -16,6 +16,12 @@ const Toast = ({ message, onClose }) => (
 );
 
 export default function Dashboard() {
+    // Helper for sentence case
+    const toSentenceCase = (str) => {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
+
     const [decks, setDecks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [newDeckName, setNewDeckName] = useState('');
@@ -170,8 +176,11 @@ export default function Dashboard() {
 
         try {
             const token = localStorage.getItem('token');
+            // Enforce sentence case on creation
+            const formattedName = toSentenceCase(newDeckName.trim());
+
             await axios.post(`${API_URL}/decks`,
-                { name: newDeckName },
+                { name: formattedName },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -389,7 +398,9 @@ export default function Dashboard() {
                                             <Book size={24} />
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{deck.name}</h3>
+                                            <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                                                {toSentenceCase(deck.name)}
+                                            </h3>
                                             <p className="text-gray-400 text-sm mt-1">Created {new Date(deck.created_at).toLocaleDateString()}</p>
                                         </div>
                                     </div>
