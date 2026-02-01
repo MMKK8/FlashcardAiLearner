@@ -14,7 +14,7 @@ export default function StudyPage() {
     const [sessionComplete, setSessionComplete] = useState(false);
     const [reviewedCount, setReviewedCount] = useState(0);
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
     useEffect(() => {
         if (params.id) {
