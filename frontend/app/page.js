@@ -31,7 +31,9 @@ export default function Home() {
             router.push('/dashboard');
         } catch (err) {
             console.error('Auth error:', err);
-            setError(err.response?.data?.error || 'An error occurred. Please try again.');
+            const errorMessage = err.response?.data?.error || err.message || 'An error occurred';
+            const status = err.response?.status ? ` (Status: ${err.response.status})` : '';
+            setError(`${errorMessage}${status}`);
         }
     };
 
